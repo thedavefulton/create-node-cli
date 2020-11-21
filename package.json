@@ -1,0 +1,39 @@
+{
+  "name": "create-node-cli",
+  "version": "1.0.0",
+  "description": "A CLI to bootstrap Node.js CLI projects",
+  "main": "src/index.js",
+  "bin": {
+    "@thedavefulton/create-node-cli": "bin/create-node-cli",
+    "create-node-cli": "bin/create-node-cli"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "templates/"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "cli",
+    "create-node-cli"
+  ],
+  "author": "David Fulton",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^2.2.0"
+  },
+  "dependencies": {
+    "arg": "^5.0.0",
+    "chalk": "^4.1.0",
+    "execa": "^4.1.0",
+    "inquirer": "^7.3.3",
+    "listr": "^0.14.3",
+    "ncp": "^2.0.0",
+    "pkg-install": "^1.0.0"
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "name": "create-node-cli",
+  "name": "@thedavefulton/create-node-cli",
   "version": "1.0.0",
   "description": "A CLI to bootstrap Node.js CLI projects",
   "main": "src/index.js",

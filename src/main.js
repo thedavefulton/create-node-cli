@@ -1,11 +1,11 @@
 const execa = require('execa');
 const Listr = require('listr');
 const { projectInstall } = require('pkg-install');
-
 const chalk = require('chalk');
 const fs = require('fs');
 const ncp = require('ncp');
 const path = require('path');
+const mkdirp = require('mkdirp');
 const { promisify } = require('util');
 
 const access = promisify(fs.access);
@@ -15,6 +15,18 @@ async function copyTemplateFiles(options) {
   return copy(options.templateDirectory, options.targetDirectory, {
     clobber: false,
   });
+}
+
+function updatePackageJson(options) {
+  const packageJson = require(`${options.targetDirectory}/package.json`);
+  console.log(packageJson);
+  const updatedPackageJson = {
+    ...packageJson,
+    name: options.package,
+    author: options.author,
+  };
+  console.log(updatedPackageJson);
+  fs.writeFileSync(`${options.targetDirectory}/package.json`, JSON.stringify(updatedPackageJson, null, 2));
 }
 
 async function initGit(options) {
@@ -30,10 +42,11 @@ async function initGit(options) {
 exports.createProject = async function createProject(options) {
   options = {
     ...options,
-    targetDirectory: options.targetDirectory || process.cwd(),
+    targetDirectory: `${process.cwd()}/${options.package}`,
   };
 
-  const templateDir = path.resolve(__dirname, '../templates', options.template.toLowerCase());
+  await mkdirp(options.targetDirectory);
+  const templateDir = path.resolve(__dirname, '../templates/javascript');
   options.templateDirectory = templateDir;
 
   try {
@@ -49,17 +62,20 @@ exports.createProject = async function createProject(options) {
       task: () => copyTemplateFiles(options),
     },
     {
-      title: 'Initialize git',
-      task: () => initGit(options),
-      enabled: () => options.git,
-    },
-    {
       title: 'Install dependencies',
       task: () =>
         projectInstall({
           cwd: options.targetDirectory,
         }),
-      skip: () => (!options.runInstall ? 'Pass --install to automatically install dependencies' : undefined),
+    },
+    {
+      title: 'Update package.json',
+      task: () => updatePackageJson(options),
+    },
+    {
+      title: 'Initialize git',
+      task: () => initGit(options),
+      enabled: () => options.git,
     },
   ]);
 

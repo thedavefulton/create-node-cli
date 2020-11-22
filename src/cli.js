@@ -56,7 +56,7 @@ async function promptForMissingOptions(options) {
 exports.cli = async function cli(args) {
   let options = parseArgumentsIntoOptions(args);
   options = await promptForMissingOptions(options);
-  // await createProject(options);
+  await createProject(options);
   // console.log(process.cwd());
-  console.log(options);
+  // console.log({ args, options, dirname: process.cwd() });
 };

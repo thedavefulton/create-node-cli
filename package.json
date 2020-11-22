@@ -1,12 +1,9 @@
 {
   "name": "@thedavefulton/create-node-cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A CLI to bootstrap Node.js CLI projects",
   "main": "src/index.js",
-  "bin": {
-    "@thedavefulton/create-node-cli": "bin/create-node-cli",
-    "create-node-cli": "bin/create-node-cli"
-  },
+  "bin": "bin/create-node-cli",
   "files": [
     "bin/",
     "src/",

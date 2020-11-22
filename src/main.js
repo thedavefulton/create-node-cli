@@ -19,13 +19,11 @@ async function copyTemplateFiles(options) {
 
 function updatePackageJson(options) {
   const packageJson = require(`${options.targetDirectory}/package.json`);
-  console.log(packageJson);
   const updatedPackageJson = {
     ...packageJson,
     name: options.package,
     author: options.author,
   };
-  console.log(updatedPackageJson);
   fs.writeFileSync(`${options.targetDirectory}/package.json`, JSON.stringify(updatedPackageJson, null, 2));
 }
 
@@ -46,7 +44,7 @@ exports.createProject = async function createProject(options) {
   };
 
   await mkdirp(options.targetDirectory);
-  const templateDir = path.resolve(__dirname, '../templates/javascript');
+  const templateDir = path.resolve(__dirname, '../templates/typescript');
   options.templateDirectory = templateDir;
 
   try {

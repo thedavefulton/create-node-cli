@@ -1,16 +1,14 @@
 const arg = require('arg');
 const inquirer = require('inquirer');
+const execa = require('execa');
+const chalk = require('chalk');
 const { createProject } = require('./main');
 
 function parseArgumentsIntoOptions(rawArgs) {
   const args = arg(
     {
       '--git': Boolean,
-      '--install': Boolean,
-      '--yes': Boolean,
       '-g': '--git',
-      '-i': '--install',
-      '-y': '--yes',
     },
     {
       argv: rawArgs.slice(2),
@@ -18,53 +16,47 @@ function parseArgumentsIntoOptions(rawArgs) {
   );
 
   return {
-    skipPrompts: args['--yes'] || false,
     git: args['--git'] || false,
-    template: args._[0],
-    runInstall: args['--install'] || false,
   };
 }
 
-async function promptForMissingOptions(options) {
-  const defaultTemplate = 'JavaScript';
-  if (options.skipPrompts) {
-    return {
-      ...options,
-      template: options.template || defaultTemplate,
-    };
+async function getGitUserName() {
+  try {
+    const result = await execa('git', ['config', 'user.name']);
+    return result.stdout;
+  } catch (err) {
+    console.error('%s Error retrieving git user.name', chalk.red.bold('ERROR'));
   }
+}
 
-  const questions = [];
-  if (!options.template) {
-    questions.push({
-      type: 'list',
-      name: 'template',
-      message: 'Please choose which project template to use',
-      choices: ['JavaScript', 'TypeScript'],
-      default: defaultTemplate,
-    });
-  }
-  if (!options.git) {
-    questions.push({
-      type: 'confirm',
-      name: 'git',
-      message: 'Initialize a git repository?',
-      default: false,
-    });
-  }
+async function promptForMissingOptions(options) {
+  const defaultUserName = await getGitUserName();
+
+  const questions = [
+    {
+      type: 'input',
+      name: 'package',
+      message: 'Please enter name of project',
+    },
+    {
+      type: 'input',
+      name: 'author',
+      message: 'Please enter name of author',
+      default: defaultUserName || '',
+    },
+  ];
 
   const answers = await inquirer.prompt(questions);
 
   return {
-    ...options,
-    template: options.template || answers.template,
-    git: options.git || answers.git,
+    ...answers,
   };
 }
 
 exports.cli = async function cli(args) {
   let options = parseArgumentsIntoOptions(args);
   options = await promptForMissingOptions(options);
-  await createProject(options);
-  console.log(process.cwd());
+  // await createProject(options);
+  // console.log(process.cwd());
+  console.log(options);
 };

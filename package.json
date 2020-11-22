@@ -1,6 +1,6 @@
 {
   "name": "@thedavefulton/create-node-cli",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A CLI to bootstrap Node.js CLI projects",
   "main": "src/index.js",
   "bin": "bin/create-node-cli",
@@ -9,6 +9,10 @@
     "src/",
     "templates/"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thedavefulton/create-node-cli.git"
+  },
   "publishConfig": {
     "access": "public"
   },

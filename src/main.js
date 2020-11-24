@@ -21,8 +21,8 @@ function updatePackageJson(options) {
   const packageJson = require(`${options.targetDirectory}/package.json`);
   const updatedPackageJson = {
     ...packageJson,
-    name: options.package,
-    author: options.author,
+    name: options.project,
+    author: options.name,
   };
   fs.writeFileSync(`${options.targetDirectory}/package.json`, JSON.stringify(updatedPackageJson, null, 2));
 }
@@ -40,11 +40,11 @@ async function initGit(options) {
 exports.createProject = async function createProject(options) {
   options = {
     ...options,
-    targetDirectory: `${process.cwd()}/${options.package}`,
+    targetDirectory: `${process.cwd()}/${options.project}`,
   };
 
   await mkdirp(options.targetDirectory);
-  const templateDir = path.resolve(__dirname, '../templates/typescript');
+  const templateDir = path.resolve(__dirname, `../templates/${options.template.toLowerCase()}`);
   options.templateDirectory = templateDir;
 
   try {

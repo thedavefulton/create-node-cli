@@ -7,6 +7,10 @@ const { createProject } = require('./main');
 function parseArgumentsIntoOptions(rawArgs) {
   const args = arg(
     {
+      '--project': String,
+      '-p': '--project',
+      '--name': String,
+      '-n': '--n',
       '--git': Boolean,
       '-g': '--git',
     },
@@ -16,7 +20,10 @@ function parseArgumentsIntoOptions(rawArgs) {
   );
 
   return {
-    git: args['--git'] || false,
+    template: args._[0] === 'ts' ? 'TypeScript' : args._[0] === 'js' ? 'JavaScript' : null,
+    project: args['--project'] || '',
+    name: args['--name'] || '',
+    git: args['--git'] || null,
   };
 }
 
@@ -32,31 +39,51 @@ async function getGitUserName() {
 async function promptForMissingOptions(options) {
   const defaultUserName = await getGitUserName();
 
-  const questions = [
-    {
-      type: 'input',
-      name: 'package',
-      message: 'Please enter name of project',
-    },
-    {
-      type: 'input',
-      name: 'author',
-      message: 'Please enter name of author',
-      default: defaultUserName || '',
-    },
-  ];
+  const questions = [];
+
+  if (!options.template) {
+    questions.push({
+      type: 'list',
+      name: 'template',
+      message: 'Please choose which project template to use',
+      choices: ['TypeScript', 'JavaScript'],
+      default: 'TypeScript',
+    });
+
+    if (!options.project) {
+      questions.push({
+        type: 'input',
+        name: 'project',
+        message: 'Please enter name of project',
+      });
+    }
+
+    if (!options.name) {
+      questions.push({
+        type: 'input',
+        name: 'author',
+        message: 'Please enter name of author',
+        default: defaultUserName || '',
+      });
+    }
+
+    if (!options.git) {
+      questions.push({
+        type: 'confirm',
+        name: 'git',
+        message: 'Initialize a git repository?',
+        default: false,
+      });
+    }
+  }
 
   const answers = await inquirer.prompt(questions);
 
-  return {
-    ...answers,
-  };
+  return { ...options, ...answers };
 }
 
 exports.cli = async function cli(args) {
   let options = parseArgumentsIntoOptions(args);
   options = await promptForMissingOptions(options);
   await createProject(options);
-  // console.log(process.cwd());
-  // console.log({ args, options, dirname: process.cwd() });
 };

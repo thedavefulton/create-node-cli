@@ -1,6 +1,8 @@
 const readline = require('readline');
 const fs = require('fs');
 const path = require('path');
+const chalk = require('chalk');
+const boxen = require('boxen');
 
 export const readFile = async (fileName = 'data.txt') => {
   const lines = [];
@@ -13,3 +15,10 @@ export const readFile = async (fileName = 'data.txt') => {
 
   return lines;
 };
+
+export function shout(message) {
+  if (typeof message === 'number') {
+    message = message.toString();
+  }
+  console.log(boxen(chalk.blue(message), { padding: 1, margin: 1 }));
+}

@@ -1,4 +1,4 @@
-import { sum } from '../index';
+import { sum } from '../partTwo';
 
 test('sum', () => {
   expect(sum()).toBe(0);

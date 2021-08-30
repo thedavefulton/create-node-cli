@@ -7,8 +7,7 @@
     "format": "prettier --write .",
     "build": "tsc",
     "watch": "tsc -w",
-    "run:one": "node dist/partOne.js",
-    "run:two": "node dist/partTwo.js",
+    "start": "node dist/index.js",
     "test": "jest --watchAll",
     "dev": "concurrently \"npm:watch\" \"npm:test\""
   },

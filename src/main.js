@@ -34,7 +34,6 @@ async function initGit(options) {
   if (result.failed) {
     return Promise.reject(new Error('Failed to initialize git'));
   }
-  return;
 }
 
 exports.createProject = async function createProject(options) {
@@ -44,7 +43,7 @@ exports.createProject = async function createProject(options) {
   };
 
   await mkdirp(options.targetDirectory);
-  const templateDir = path.resolve(__dirname, `../templates/${options.template.toLowerCase()}`);
+  const templateDir = path.resolve(__dirname, `../template`);
   options.templateDirectory = templateDir;
 
   try {

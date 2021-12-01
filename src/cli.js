@@ -5,12 +5,13 @@ const chalk = require('chalk');
 const { createProject } = require('./main');
 
 function parseArgumentsIntoOptions(rawArgs) {
+  console.log(rawArgs);
   const args = arg(
     {
       '--project': String,
       '-p': '--project',
       '--name': String,
-      '-n': '--n',
+      '-n': '--name',
       '--git': Boolean,
       '-g': '--git',
     },
@@ -20,7 +21,7 @@ function parseArgumentsIntoOptions(rawArgs) {
   );
 
   return {
-    template: args._[0] === 'ts' ? 'TypeScript' : args._[0] === 'js' ? 'JavaScript' : null,
+    // template: args._[0] === 'ts' ? 'TypeScript' : args._[0] === 'js' ? 'JavaScript' : null,
     project: args['--project'] || '',
     name: args['--name'] || '',
     git: args['--git'] || null,
@@ -33,22 +34,24 @@ async function getGitUserName() {
     return result.stdout;
   } catch (err) {
     console.error('%s Error retrieving git user.name', chalk.red.bold('ERROR'));
+    return null;
   }
 }
 
 async function promptForMissingOptions(options) {
   const defaultUserName = await getGitUserName();
+  if (!options.name && defaultUserName) options.name = defaultUserName;
 
   const questions = [];
 
   if (!options.template) {
-    questions.push({
-      type: 'list',
-      name: 'template',
-      message: 'Please choose which project template to use',
-      choices: ['TypeScript', 'JavaScript'],
-      default: 'TypeScript',
-    });
+    // questions.push({
+    //   type: 'list',
+    //   name: 'template',
+    //   message: 'Please choose which project template to use',
+    //   choices: ['TypeScript', 'JavaScript'],
+    //   default: 'TypeScript',
+    // });
 
     if (!options.project) {
       questions.push({
@@ -63,17 +66,12 @@ async function promptForMissingOptions(options) {
         type: 'input',
         name: 'author',
         message: 'Please enter name of author',
-        default: defaultUserName || '',
+        default: '',
       });
     }
 
     if (!options.git) {
-      questions.push({
-        type: 'confirm',
-        name: 'git',
-        message: 'Initialize a git repository?',
-        default: false,
-      });
+      options.git = false;
     }
   }
 

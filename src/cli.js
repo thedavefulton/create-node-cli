@@ -5,7 +5,6 @@ const chalk = require('chalk');
 const { createProject } = require('./main');
 
 function parseArgumentsIntoOptions(rawArgs) {
-  console.log(rawArgs);
   const args = arg(
     {
       '--project': String,

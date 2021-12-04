@@ -63,6 +63,7 @@ exports.createProject = async function createProject(options) {
       task: () =>
         projectInstall({
           cwd: options.targetDirectory,
+          prefer: 'yarn',
         }),
     },
     {

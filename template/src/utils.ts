@@ -4,7 +4,7 @@ const path = require('path');
 const chalk = require('chalk');
 const boxen = require('boxen');
 
-export const readFile = async (fileName = 'data.txt') => {
+export const readFile = async (fileName = 'input.txt') => {
   const lines: string[] = [];
   const instream = fs.createReadStream(path.resolve(process.cwd(), fileName));
   const rl = readline.createInterface({ input: instream });

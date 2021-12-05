@@ -1,0 +1,2 @@
+// The test input is automatically loaded
+// from this file

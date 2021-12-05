@@ -16,6 +16,8 @@ export const readFile = async (fileName = 'input.txt') => {
   return lines;
 };
 
+export const readTestFile = async () => await readFile('test.txt');
+
 export function shout(message: string | number) {
   if (typeof message === 'number') {
     message = message.toString();

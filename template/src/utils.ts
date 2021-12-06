@@ -18,6 +18,16 @@ export const readFile = async (fileName = 'input.txt') => {
 
 export const readTestFile = async () => await readFile('test.txt');
 
+export function range(start: number, end: number) {
+  const range = [];
+
+  for (let i = start; i <= end; i++) {
+    range.push(i);
+  }
+
+  return range;
+}
+
 export function shout(message: string | number) {
   if (typeof message === 'number') {
     message = message.toString();

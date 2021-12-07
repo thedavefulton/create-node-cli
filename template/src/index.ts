@@ -1,5 +1,5 @@
-import { partOneShout } from './partOne';
-import { partTwoShout } from './partTwo';
+import { partOneShout } from "./partOne";
+import { partTwoShout } from "./partTwo";
 
 function main() {
   partOneShout();

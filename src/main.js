@@ -27,6 +27,15 @@ function updatePackageJson(options) {
   fs.writeFileSync(`${options.targetDirectory}/package.json`, JSON.stringify(updatedPackageJson, null, 2));
 }
 
+async function performInitialCompile(options) {
+  const result = await execa('yarn', ['ts:build'], {
+    cwd: options.targetDirectory,
+  });
+  if (result.failed) {
+    return Promise.reject(new Error('Failed to perform initial compile'));
+  }
+}
+
 async function initGit(options) {
   const result = await execa('git', ['init'], {
     cwd: options.targetDirectory,
@@ -69,6 +78,10 @@ exports.createProject = async function createProject(options) {
     {
       title: 'Update package.json',
       task: () => updatePackageJson(options),
+    },
+    {
+      title: 'Performing initial compile',
+      task: () => performInitialCompile(options),
     },
     {
       title: 'Initialize git',

@@ -28,6 +28,15 @@ export function range(start: number, end: number) {
   return range;
 }
 
+export function zip<T, U>(arr1: T[], arr2: U[]) {
+  if (arr1.length !== arr2.length)
+    throw new Error(
+      `zip arrays must be of equal length: ${arr1.length}, ${arr2.length}`
+    );
+
+  return arr1.map((t, idx) => [t, arr2[idx]]);
+}
+
 export function shout(message: string | number) {
   if (typeof message === "number") {
     message = message.toString();

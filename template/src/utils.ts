@@ -18,6 +18,13 @@ export const readFile = async (fileName = "./files/input.txt") => {
 
 export const readTestFile = async () => await readFile("./files/test.txt");
 
+export function shout(message: string | number) {
+  if (typeof message === "number") {
+    message = message.toString();
+  }
+  console.log(boxen(chalk.blue(message), { padding: 1, margin: 1 }));
+}
+
 export function reverse<T>(arr: T[]): T[] {
   const start = arr.length - 1;
   const reversedArr: T[] = [];
@@ -57,9 +64,10 @@ export function zip<T, U>(arr1: T[], arr2: U[]): [T, U][] {
   return arr1.map((t, idx) => [t, arr2[idx]]);
 }
 
-export function shout(message: string | number) {
-  if (typeof message === "number") {
-    message = message.toString();
-  }
-  console.log(boxen(chalk.blue(message), { padding: 1, margin: 1 }));
+export function min(arr: number[]) {
+  return arr.reduce((acc, cur) => (cur < acc ? cur : acc));
+}
+
+export function max(arr: number[]) {
+  return arr.reduce((acc, cur) => (cur > acc ? cur : acc));
 }

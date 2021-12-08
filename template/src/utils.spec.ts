@@ -1,4 +1,4 @@
-import { range, reverse, zip } from "./utils";
+import { max, min, range, reverse, zip } from "./utils";
 
 test("reverse", () => {
   expect(reverse([0, 1, 2])).toStrictEqual([2, 1, 0]);
@@ -15,4 +15,14 @@ test("zip", () => {
     [0, 1],
     [0, 1],
   ]);
+});
+
+test("min", () => {
+  expect(min([2, 1, 0])).toBe(0);
+  expect(min([1, 2, 3])).toBe(1);
+});
+
+test("max", () => {
+  expect(max([2, 1, 0])).toBe(2);
+  expect(max([1, 2, 3])).toBe(3);
 });

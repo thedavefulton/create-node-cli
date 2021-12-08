@@ -18,17 +18,37 @@ export const readFile = async (fileName = "./files/input.txt") => {
 
 export const readTestFile = async () => await readFile("./files/test.txt");
 
-export function range(start: number, end: number) {
-  const range = [];
+export function reverse<T>(arr: T[]): T[] {
+  const start = arr.length - 1;
+  const reversedArr: T[] = [];
 
-  for (let i = start; i <= end; i++) {
+  for (let idx = start; idx >= 0; idx--) {
+    reversedArr.push(arr[idx]);
+  }
+
+  return reversedArr;
+}
+
+export function range(start: number, end: number) {
+  const range: number[] = [];
+  let _start = start,
+    _end = end,
+    reversed = false;
+
+  if (_start > _end) {
+    reversed = true;
+    _start = end;
+    _end = start;
+  }
+
+  for (let i = _start; i <= _end; i++) {
     range.push(i);
   }
 
-  return range;
+  return reversed ? (reverse(range) as number[]) : range;
 }
 
-export function zip<T, U>(arr1: T[], arr2: U[]) {
+export function zip<T, U>(arr1: T[], arr2: U[]): [T, U][] {
   if (arr1.length !== arr2.length)
     throw new Error(
       `zip arrays must be of equal length: ${arr1.length}, ${arr2.length}`

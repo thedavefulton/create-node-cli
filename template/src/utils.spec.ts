@@ -1,4 +1,8 @@
-import { range, zip } from "./utils";
+import { range, reverse, zip } from "./utils";
+
+test("reverse", () => {
+  expect(reverse([0, 1, 2])).toStrictEqual([2, 1, 0]);
+});
 
 test("range", () => {
   expect(range(0, 2)).toStrictEqual([0, 1, 2]);
